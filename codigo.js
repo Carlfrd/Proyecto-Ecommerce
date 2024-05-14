@@ -12,7 +12,7 @@ function renderizarProductos(listProds){
             <img class="card-img-top" src=${prod.foto} alt=${prod.foto}>
             <div class="card-body">
                 <h5 class="card-title">${prod.nombre}</h5>
-                <p class="card-text">${prod.precio}</p>
+                <p class="card-text">$ ${prod.precio}</p>
                 <button class="btn btn-primary compra" id=${prod.id}>Agregar</button>
             </div>
         </div>
@@ -37,8 +37,10 @@ function agregarACarrito(producto){
     tablaBody.innerHTML+=`
     <tr>
         <td>${producto.id}</td>
+        <td>${producto.cantidad}</td>
         <td>${producto.nombre}</td>
         <td>${producto.precio}</td>
+        <td>${producto.SubTotal}</td>
     </tr>
     `
 // agregar calculo total
@@ -66,8 +68,8 @@ campoEmail.addEventListener('input', ()=>{
 })
 
 function borrarC(){
-    campoNombre.value = '';
-    campoEmail.value = '';
+    campoNombre.value = " ";
+    campoEmail.value = " ";
 }
 
 const formulario = document.getElementById('formulario');

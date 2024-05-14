@@ -12,11 +12,16 @@ html {
     background-size: cover;
     font-family: "Libre Baskerville", serif;
   }
+body {
+    background-image: url(/medios/fondooscuro.jpg);
+    background-size: cover;
+}
 header{
     display: flex;
     justify-content: center;
     img {
         width: 300px;
+        height: 150px;
 }
 }
 .banner {
@@ -24,17 +29,21 @@ header{
     flex-direction: column;
     justify-content:center;
     text-align: center;
-    color: black;
+    color: white;
     text-shadow: -6px 0px 9px rgba(255,255,255,0.28);
     text-transform: uppercase;
-    font-size: 1.9rem;
+    font-size: 2rem;
+    margin-top: 1cm;
+}
+.tabla {
+  color: white;
 }
   /*footer*/
 footer{
     width: 100%;
     height: 110px;
     text-align: center;   
-    color:black;
+    color:white;
     text-shadow: -6px 0px 9px rgba(255,255,255,0.28);
     text-transform: uppercase;
     font-size: 1.2rem;
