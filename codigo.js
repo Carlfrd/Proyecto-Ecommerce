@@ -4,6 +4,8 @@ let carrito = []
 const articuloCartas = document.getElementById("carta");
 articuloCartas.className = "row container gap-3 mx-auto my-3"
 const tablaBody = document.getElementById('tablabody');
+const finalizarCompra = document.getElementById("btnComprar");
+const vaciarCarrito = document.getElementById("btnLimpiar");
 
 function renderizarProductos(listProds){
     for (const prod of listProds){
@@ -33,6 +35,12 @@ renderizarProductos(Productos)
 
 function agregarACarrito(producto){
     carrito.push(producto);
+    //sweetalert
+    Swal.fire({
+        title: "Agregaste Al Carrito",
+        text: `${producto.nombre}`,
+        icon: "success"
+      });
     console.table(carrito);
     tablaBody.innerHTML+=`
     <tr>
@@ -44,6 +52,8 @@ function agregarACarrito(producto){
     </tr>
     `
 // agregar calculo total
+let totalAcomulado = carrito.reduce((acum, prod)=> acum + prod.precio,0)
+document.getElementById("carritofinal").innerText = `Total a Pagar $: `+totalAcomulado;
 }
 
 // eventos teclado
@@ -67,9 +77,9 @@ campoEmail.addEventListener('input', ()=>{
     }
 })
 
-function borrarC(){
-    campoNombre.value = " ";
-    campoEmail.value = " ";
+function borrarCampos(){
+    campoNombre.value = ` `;
+    campoEmail.value = ` `;
 }
 
 const formulario = document.getElementById('formulario');
@@ -80,4 +90,26 @@ function validar (ev){
         ev.preventDefault();
         alert('ingrese nombre o email valido');
     }
+}
+
+// final de compra
+btnComprar.onclick=()=>{
+    Swal.fire({
+        title: "Compra Efectuada",
+        text: `Muchas Gracias`,
+        icon: "success"
+      });
+      vaciarCarro();
+}
+
+function vaciarCarro(){
+    carrito=[];
+    tablaBody.innerHTML='';
+    document.getElementById("carritofinal").innerText = `Total a Pagar $: `;
+    
+}
+
+//vaciar carro
+vaciarCarrito.onclick=()=>{
+    vaciarCarro();
 }

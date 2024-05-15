@@ -40,28 +40,28 @@ const Productos = [
         id: 7,
         nombre: 'Picada',
         foto: 'https://media.istockphoto.com/id/1471474481/es/foto/aperitivo-surtido-conjunto-salchicha-y-queso-en-una-tabla-de-madera-vista-superior-sin-gente.jpg?s=612x612&w=0&k=20&c=zsLl7shxljQ0tuyJz7hsNGqjjf-kfJhMbH_lGlUPvdU=',
-        precio: 4562
+        precio: 12045
         
     },
     {
         id: 8,
         nombre: 'Picada',
         foto: 'https://media.istockphoto.com/id/1326236002/es/foto/plato-de-queso.jpg?s=612x612&w=0&k=20&c=qCD_MaD9EYo1BCkL40H4Zie1zyA1w8bmM6WCA_88A6k=',
-        precio: 4562
+        precio: 7031
         
     },
     {
         id: 9,
         nombre: 'Picada',
         foto: 'https://media.istockphoto.com/id/1282169219/es/foto/tema-de-navidad-charcuterie-top-view-escena-de-mesa-contra-madera-oscura.jpg?s=612x612&w=0&k=20&c=JV0Sxhsshsy5hpTC8DETmrShL9b6tNapalLBfK4kruw=',
-        precio: 4562
+        precio: 8422
         
     },
     {
         id: 10,
         nombre: 'Picada',
         foto: 'https://media.istockphoto.com/id/1186420213/es/foto/charcuterie-tablas-de-carnes-variadas-quesos-y-aperitivos-escena-de-mesa-de-vista-superior-en.jpg?s=612x612&w=0&k=20&c=bv6hihUU1tX2pbbXsDvWNQq3mphjUtVoOTS5Lobx3_Y=',
-        precio: 4562
+        precio: 6542
         
     },
 ]
