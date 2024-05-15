@@ -33,29 +33,72 @@ function renderizarProductos(listProds){
 }
 renderizarProductos(Productos)
 
-function agregarACarrito(producto){
-    carrito.push(producto);
-    //sweetalert
+function agregarACarrito(producto) {
+    const index = carrito.findIndex(item => item.id === producto.id);
     Swal.fire({
         title: "Agregaste Al Carrito",
         text: `${producto.nombre}`,
         icon: "success"
       });
-    console.table(carrito);
-    tablaBody.innerHTML+=`
-    <tr>
-        <td>${producto.id}</td>
-        <td>${producto.cantidad}</td>
-        <td>${producto.nombre}</td>
-        <td>${producto.precio}</td>
-        <td>${producto.SubTotal}</td>
-    </tr>
-    `
-// agregar calculo total
-let totalAcomulado = carrito.reduce((acum, prod)=> acum + prod.precio,0)
-document.getElementById("carritofinal").innerText = `Total a Pagar $: `+totalAcomulado;
-}
+    if (index !== -1) {
+        // Si el producto ya está en el carrito, sumar las cantidades
+        carrito[index].cantidad += 1;
+        // Actualizar el subtotal
+        carrito[index].SubTotal = carrito[index].precio * carrito[index].cantidad;
+        // Actualizar la fila correspondiente en la tabla
+        const filaExistente = document.getElementById(`fila-${producto.id}`);
+        filaExistente.children[1].textContent = carrito[index].cantidad;
+        filaExistente.children[4].textContent = carrito[index].SubTotal;
+    } else {
+        // Si el producto no está en el carrito, inicializar cantidad y subtotal
+        producto.cantidad = 1;
+        producto.SubTotal = producto.precio;
+        // Agregar el producto al carrito
+        carrito.push(producto);
+        tablaBody.innerHTML += `
+            <tr id="fila-${producto.id}">
+                <td>${producto.id}</td>
+                <td>${producto.cantidad}</td>
+                <td>${producto.nombre}</td>
+                <td>${producto.precio}</td>
+                <td>${producto.SubTotal}</td>
+            </tr>
+        `;
+    }
 
+    // Actualizar el total acumulado
+    let totalAcumulado = carrito.reduce((acum, prod) => acum + prod.SubTotal, 0);
+    document.getElementById("carritofinal").innerText = `Total a Pagar $: ${totalAcumulado}`;
+    // Guardar el carrito en localStorage como JSON
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+}
+function vaciarCarro(){
+    carrito=[];
+    tablaBody.innerHTML='';
+    document.getElementById("carritofinal").innerText = `Total a Pagar $: `;  
+    
+    // Limpiar el localStorage
+    localStorage.removeItem("carrito");
+}
+// Cargar el carrito desde localStorage si hay alguno
+window.addEventListener('DOMContentLoaded', () => {
+    const carritoGuardado = localStorage.getItem("carrito");
+    if (carritoGuardado) {
+        carrito = JSON.parse(carritoGuardado);
+        // Renderizar los productos del carrito guardado
+        carrito.forEach(producto => {
+            tablaBody.innerHTML += `
+                <tr id="fila-${producto.id}">
+                    <td>${producto.id}</td>
+                    <td>${producto.cantidad}</td>
+                    <td>${producto.nombre}</td>
+                    <td>${producto.precio}</td>
+                    <td>${producto.SubTotal}</td>
+                </tr>
+            `;
+        });
+    }
+});
 // eventos teclado
 
 const campoNombre = document.getElementById('nombre');
@@ -92,22 +135,37 @@ function validar (ev){
     }
 }
 
-// final de compra
-btnComprar.onclick=()=>{
-    Swal.fire({
-        title: "Compra Efectuada",
-        text: `Muchas Gracias`,
-        icon: "success"
-      });
-      vaciarCarro();
-}
+// Finalizar compra
+finalizarCompra.onclick = async () => {
+    const { value: datoF } = await Swal.fire({
+        title: 'Completa tu información',
+        html:
+            '<input id="nomb" class="swal2-input" placeholder="Nombre">' +
+            '<input id="apell" class="swal2-input" placeholder="Apellido">' +
+            '<input id="telef" class="swal2-input" placeholder="Teléfono">',
+        focusConfirm: false,
+        preConfirm: () => {
+            const nombre = document.getElementById('nomb').value;
+            const apellido = document.getElementById('apell').value;
+            const telefono = document.getElementById('telef').value;
 
-function vaciarCarro(){
-    carrito=[];
-    tablaBody.innerHTML='';
-    document.getElementById("carritofinal").innerText = `Total a Pagar $: `;
-    
-}
+            if (!nombre || !apellido || !telefono) {
+                Swal.showValidationMessage('Por favor completa todos los datos');
+                return false;
+            }
+            return { nombre, apellido, telefono };
+        }
+    });
+
+    if (datoF) {
+        Swal.fire({
+            title: "Compra Efectuada",
+            text: `Muchas Gracias ${datoF.nombre} ${datoF.apellido}. Teléfono: ${datoF.telefono}`,
+            icon: "success"
+        });
+        vaciarCarro();
+    }
+};
 
 //vaciar carro
 vaciarCarrito.onclick=()=>{
